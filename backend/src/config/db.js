@@ -10,8 +10,11 @@ const pool = mysql.createPool({
   database: process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit: 10,
-  connectTimeout: 10000,
+   connectTimeout: 10000,
   decimalNumbers: true,
+  ssl: process.env.DB_SSL === 'true'
+    ? { minVersion: 'TLSv1.2' }
+    : undefined,
 });
 
 async function query(sql, params = []) {

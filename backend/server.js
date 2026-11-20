@@ -49,18 +49,20 @@ async function ensureVendorCoordinateColumns() {
       console.log('Database update: added vendors.longitude');
     }
   } catch (err) {
-    // Keep the API available if the database is temporarily offline. The
-    // regular request error handler will report database errors to the client.
+    
     console.error('Could not verify vendor map columns:', err.code || err.message);
   }
 }
 
-(async () => {
-  await testConnection();
-  await ensureVendorCoordinateColumns();
-  app.listen(PORT, () => {
-    console.log(`Batloung Farm API listening on http://localhost:${PORT}`);
-  });
-})();
+if (require.main === module) {
+  (async () => {
+    await testConnection();
+    await ensureVendorCoordinateColumns();
+
+    app.listen(PORT, () => {
+      console.log(`Batloung Farm API listening on http://localhost:${PORT}`);
+    });
+  })();
+}
 
 module.exports = app;
